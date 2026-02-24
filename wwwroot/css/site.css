@@ -1,0 +1,108 @@
+body {
+    background-color: #f8fafc;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.app-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 1.5rem 1rem; 
+    display: flex;
+    justify-content: center;
+}
+
+.app-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 848px; 
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    padding: 1rem 2rem; 
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.app-brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+}
+
+.nav-pill-group {
+    position: relative;
+    display: flex;
+    background: #f1f5f9; 
+    border-radius: 50px;
+    padding: 0.35rem; 
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.nav-item {
+    position: relative;
+    z-index: 2;
+    text-decoration: none;
+    color: #64748b;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.6rem 0;
+    width: 110px; 
+    text-align: center;
+    border-radius: 50px;
+    transition: color 0.3s ease;
+}
+
+    .nav-item:hover {
+        color: #ffffff;
+    }
+
+.calc-tab:hover ~ .nav-glider {
+    transform: translateX(0) !important;
+}
+
+.hist-tab:hover ~ .nav-glider {
+    transform: translateX(110px) !important;
+}
+
+.nav-glider {
+    position: absolute;
+    top: 0.35rem;
+    bottom: 0.35rem;
+    width: 110px;
+    background: #111827;
+    border-radius: 50px;
+    z-index: 1;
+    transition: transform 0.2s ease-out;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.active-calc .nav-glider {
+    transform: translateX(0);
+}
+
+.active-history .nav-glider {
+    transform: translateX(110px); 
+}
+
+.app-main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.app-footer {
+    text-align: center;
+    padding: 2rem;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    font-weight: 500;
+}

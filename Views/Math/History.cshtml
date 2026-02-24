@@ -1,0 +1,76 @@
+﻿@model IEnumerable<MathApp.Models.MathCalculations>
+
+@{
+    ViewData["Title"] = "Calculation History";
+}
+
+<link rel="stylesheet" href="~/css/calculator.css" />
+
+<div class="calc-wrapper">
+    <div class="calc-card">
+
+        <div class="calc-header">
+            <h2>History</h2>
+            @* <a asp-action="Calculate" class="history-link">Back to Calculator</a> *@
+        </div>
+
+        <div class="table-container">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>First Number</th>
+                        <th>Operation</th>
+                        <th>Second Number</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            string opSymbol = item.Operation switch
+                            {
+                                1 => "＋",
+                                2 => "−",
+                                3 => "×",
+                                4 => "÷",
+                                _ => "?"
+                            };
+
+                            string badgeClass = item.Operation switch
+                            {
+                                1 => "add",
+                                2 => "sub",
+                                3 => "mul",
+                                4 => "div",
+                                _ => ""
+                            };
+
+                            <tr>
+                                <td>@item.Operand1</td>
+                                <td>
+                                    <span class="op-badge @badgeClass">@opSymbol</span>
+                                </td>
+                                <td>@item.Operand2</td>
+                                <td class="result-text">= @item.Result</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4">
+                                <div class="empty-state">
+                                    <i>🤷‍♂️</i>
+                                    No calculations yet. Go make some math happen!
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>

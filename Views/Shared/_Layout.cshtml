@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MathApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MathApp.styles.css" asp-append-version="true" />
+</head>
+<body>
+
+    @{
+        var currentAction = ViewContext.RouteData.Values["Action"]?.ToString() ?? "Calculate";
+        var activeNavClass = currentAction == "History" ? "active-history" : "active-calc";
+    }
+
+    <header class="app-header">
+        <nav class="app-nav">
+            <a class="app-brand" asp-area="" asp-controller="Math" asp-action="Calculate">
+                MathApp
+            </a>
+
+            <div class="nav-pill-group @activeNavClass">
+
+                <a class="nav-item calc-tab @(currentAction == "Calculate" ? "active" : "")"
+                   asp-controller="Math" asp-action="Calculate">Calculate</a>
+
+                <a class="nav-item hist-tab @(currentAction == "History" ? "active" : "")"
+                   asp-controller="Math" asp-action="History">History</a>
+
+                <div class="nav-glider"></div>
+
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="app-main">
+        @RenderBody()
+    </main>
+
+    <footer class="app-footer">
+        <div class="footer-content">
+            &copy; 2026 - MathApp - Keegs
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

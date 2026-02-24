@@ -1,0 +1,113 @@
+﻿@model MathApp.Models.MathCalculations
+
+@{
+    ViewData["Title"] = "Calculate";
+
+    var errors = ViewData.ModelState.Values
+        .SelectMany(v => v.Errors)
+        .Select(e => e.ErrorMessage)
+        .ToList();
+}
+
+<link rel="stylesheet" href="~/css/calculator.css" />
+
+<div id="toast-container" class="toast-container"></div>
+
+<div class="calc-wrapper">
+    <div class="calc-card">
+
+        <div class="calc-header">
+            <h2>Quick Calculator</h2>
+            @* <a asp-action="History" class="history-link">View History</a> *@
+        </div>
+
+        <div class="calc-body">
+            <form asp-action="Calculate" method="post" class="calc-form">
+
+                <div class="calc-grid">
+
+                    <div class="inputGroup">
+                        <input type="number" step="any" asp-for="Operand1" id="Operand1" required autocomplete="off" />
+                        <label for="Operand1">First Number</label>
+                    </div>
+
+                    <div class="glass-radio-group">
+                        <input type="radio" asp-for="Operation" id="op-add" value="1" checked />
+                        <label for="op-add">＋</label>
+
+                        <input type="radio" asp-for="Operation" id="op-sub" value="2" />
+                        <label for="op-sub">−</label>
+
+                        <input type="radio" asp-for="Operation" id="op-mul" value="3" />
+                        <label for="op-mul">×</label>
+
+                        <input type="radio" asp-for="Operation" id="op-div" value="4" />
+                        <label for="op-div">÷</label>
+
+                        <div class="glass-glider"></div>
+                    </div>
+
+                    <div class="inputGroup">
+                        <input type="number" step="any" asp-for="Operand2" id="Operand2" required autocomplete="off" />
+                        <label for="Operand2">Second Number</label>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="calc-btn">Calculate</button>
+            </form>
+
+            @if (errors.Any())
+            {
+                <div class="result-display error-display">
+                    <span class="result-label error-label">Hold up...</span>
+                    <div class="error-list">
+                        @foreach (var error in errors)
+                        {
+                            <div class="error-item">@error</div>
+                        }
+                    </div>
+                </div>
+            }
+            else if (ViewBag.Result != null)
+            {
+                <div class="result-display">
+                    <span class="result-label">Result</span>
+                    <span class="result-value">@ViewBag.Result</span>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showToast(message, type = 'error') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `custom-toast toast-${type}`;
+            toast.innerText = message;
+
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.add('show');
+            });
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300); 
+            }, 4000);
+        }
+
+        @if (errors.Any())
+        {
+            foreach (var error in errors)
+            {
+                @:showToast(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(error)), "error");
+            }
+        }
+
+    </script>
+}
