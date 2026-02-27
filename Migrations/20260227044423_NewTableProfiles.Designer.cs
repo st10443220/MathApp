@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MathApp.Migrations
 {
     [DbContext(typeof(MathAppContext))]
-    [Migration("20260224173551_yes")]
-    partial class yes
+    [Migration("20260227044423_NewTableProfiles")]
+    partial class NewTableProfiles
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,9 @@ namespace MathApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CalculationID"));
+
+                    b.Property<string>("FirebaseUuid")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Operand1")
                         .HasColumnType("float");

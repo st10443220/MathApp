@@ -14,64 +14,105 @@ namespace MathApp.Controllers
             _context = context;
         }
 
-        // GET: Math/Calculate
         public IActionResult Calculate()
         {
+            var token = HttpContext.Session.GetString("currentUser");
+
+            if (token == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
             return View();
         }
 
-        // POST: Math/Calculate
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Calculate(MathCalculations model)
+        public async Task<IActionResult> Calculate(double Operand1, double Operand2, int Operation)
         {
-            if (ModelState.IsValid)
+            var token = HttpContext.Session.GetString("currentUser");
+
+            if (token == null)
             {
-                switch (model.Operation)
-                {
-                    case 1:
-                        model.Result = model.Operand1 + model.Operand2;
-                        break;
-                    case 2:
-                        model.Result = model.Operand1 - model.Operand2;
-                        break;
-                    case 3:
-                        model.Result = model.Operand1 * model.Operand2;
-                        break;
-                    case 4:
-                        if (model.Operand2 == 0)
-                        {
-                            ModelState.AddModelError("Operand2", "Cannot divide by zero, bro.");
-                            return View(model);
-                        }
-                        model.Result = model.Operand1 / model.Operand2;
-                        break;
-                    default:
-                        ModelState.AddModelError(
-                            "Operation",
-                            "How did you manage to choose the wrong operation!"
-                        );
-                        return View(model);
-                }
-
-                _context.Add(model);
-                await _context.SaveChangesAsync();
-
-                ViewBag.Result = model.Result;
-
-                return View(model);
+                return RedirectToAction("Login", "Auth");
             }
 
-            return View(model);
+            double result = 0;
+            MathCalculations mathCalculation;
+
+            try
+            {
+                mathCalculation = MathCalculations.Create(
+                    Operand1,
+                    Operand2,
+                    Operation,
+                    result,
+                    token
+                );
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Operand2", ex.Message);
+                return View();
+            }
+
+            switch (Operation)
+            {
+                case 1:
+                    mathCalculation.Result = Operand1 + Operand2;
+                    break;
+                case 2:
+                    mathCalculation.Result = Operand1 - Operand2;
+                    break;
+                case 3:
+                    mathCalculation.Result = Operand1 * Operand2;
+                    break;
+                case 4:
+                    mathCalculation.Result = Operand1 / Operand2;
+                    break;
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(mathCalculation);
+                await _context.SaveChangesAsync();
+            }
+
+            ViewBag.Result = mathCalculation.Result;
+            return View(mathCalculation);
         }
 
-        // GET: Math/History
         public async Task<IActionResult> History()
         {
+            var token = HttpContext.Session.GetString("currentUser");
+
+            if (token == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
             var history = await _context
-                .MathCalculations.OrderByDescending(m => m.CalculationID)
+                .MathCalculations.Where(m => m.FirebaseUuid == token)
+                .OrderByDescending(m => m.CalculationID)
                 .ToListAsync();
+
             return View(history);
+        }
+
+        public async Task<IActionResult> Clear()
+        {
+            var token = HttpContext.Session.GetString("currentUser");
+
+            if (token == null)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+
+            var userHistory = _context.MathCalculations.Where(m => m.FirebaseUuid == token);
+            _context.MathCalculations.RemoveRange(userHistory);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("History");
         }
     }
 }

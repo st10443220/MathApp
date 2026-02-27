@@ -1,19 +1,41 @@
 body {
-    background-color: #f8fafc;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
+/*.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 1.5rem 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.app-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 848px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}*/
 .app-header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    padding: 1.5rem 1rem; 
+    padding: 1.5rem 1rem;
     display: flex;
     justify-content: center;
+    align-items: flex-start; 
 }
 
 .app-nav {
@@ -21,88 +43,192 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 848px; 
+    max-width: 848px;
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(12px);
-    padding: 1rem 2rem; 
+    padding: 1rem 2rem;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-.app-brand {
-    font-size: 1.5rem;
-    font-weight: 800;
+.profile-widget {
+    position: absolute;
+    right: 2rem;
+    top: 1.5rem; 
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    max-height: 86.66px;
+    min-width: 170px;
+    transition: max-height 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease;
+    z-index: 1001;
+}
+
+    .profile-widget:hover {
+        max-height: 250px;
+        background: rgba(255, 255, 255, 0.75);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+
+.profile-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    height: 86.66px; 
+    font-weight: 700;
     color: #0f172a;
+    cursor: pointer;
+    gap: 1rem;
+}
+
+    .profile-trigger svg {
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+.profile-widget:hover .profile-trigger svg {
+    transform: rotate(180deg);
+}
+
+.profile-menu {
+    display: flex;
+    flex-direction: column;
+    padding: 0 0.5rem 0.5rem 0.5rem;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.profile-widget:hover .profile-menu {
+    opacity: 1;
+    transform: translateY(0);   
+    transition-delay: 0.1s; 
+}
+
+.dropdown-divider {
+    height: 2px;
+    background: #e2e8f0;
+    margin: 0 0.5rem 0.5rem 0.5rem;
+    border-radius: 2px;
+}
+
+.dropdown-item {
+    padding: 0.75rem 1rem;
+    color: #475569;
     text-decoration: none;
-    letter-spacing: 0.5px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 12px;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+    .dropdown-item:hover {
+        background: #f1f5f9;
+        color: #0f172a;
+    }
+
+    .dropdown-item.danger-text {
+        color: #ef4444;
+        margin-top: 0.25rem;
+    }
+
+        .dropdown-item.danger-text:hover {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+.app-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-decoration: none;
+  letter-spacing: 0.5px;
 }
 
 .nav-pill-group {
-    position: relative;
-    display: flex;
-    background: #f1f5f9; 
-    border-radius: 50px;
-    padding: 0.35rem; 
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  position: relative;
+  display: flex;
+  background: #f1f5f9;
+  border-radius: 50px;
+  padding: 0.35rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .nav-item {
-    position: relative;
-    z-index: 2;
-    text-decoration: none;
-    color: #64748b;
-    font-weight: 700;
-    font-size: 1rem;
-    padding: 0.6rem 0;
-    width: 110px; 
-    text-align: center;
-    border-radius: 50px;
-    transition: color 0.3s ease;
+  position: relative;
+  z-index: 2;
+  text-decoration: none;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.6rem 0;
+  width: 110px;
+  text-align: center;
+  border-radius: 50px;
+  transition: color 0.3s ease;
 }
 
-    .nav-item:hover {
-        color: #ffffff;
-    }
+.nav-item:hover {
+  color: #ffffff;
+}
 
 .calc-tab:hover ~ .nav-glider {
-    transform: translateX(0) !important;
+  transform: translateX(0) !important;
 }
 
 .hist-tab:hover ~ .nav-glider {
-    transform: translateX(110px) !important;
+  transform: translateX(110px) !important;
 }
 
+.login-tab:hover ~ .nav-glider {
+  transform: translateX(220px) !important;
+}
+
+.logout-tab:hover ~ .nav-glider {
+  transform: translateX(220px) !important;
+}
 .nav-glider {
-    position: absolute;
-    top: 0.35rem;
-    bottom: 0.35rem;
-    width: 110px;
-    background: #111827;
-    border-radius: 50px;
-    z-index: 1;
-    transition: transform 0.2s ease-out;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  width: 110px;
+  background: #111827;
+  border-radius: 50px;
+  z-index: 1;
+  transition: transform 0.2s ease-out;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .active-calc .nav-glider {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
 .active-history .nav-glider {
-    transform: translateX(110px); 
+  transform: translateX(110px);
+}
+
+.active-login .nav-glider {
+  transform: translateX(220px);
+}
+
+.active-logout .nav-glider {
+  transform: translateX(220px);
 }
 
 .app-main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .app-footer {
-    text-align: center;
-    padding: 2rem;
-    color: #94a3b8;
-    font-size: 0.875rem;
-    font-weight: 500;
+  text-align: center;
+  padding: 2rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  font-weight: 500;
 }

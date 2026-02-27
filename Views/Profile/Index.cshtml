@@ -1,0 +1,40 @@
+﻿@model MathApp.Models.ProfileViewModel
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<link rel="stylesheet" href="~/css/calculator.css" />
+
+<div class="calc-wrapper">
+    <div class="calc-card" style="max-width: 450px;">
+        <div class="calc-header">
+            <h2>Profile Settings</h2>
+        </div>
+
+        <div class="calc-body">
+            <div class="auth-container">
+                <form asp-action="UpdateProfile" method="post" class="auth-form">
+                    <div asp-validation-summary="All" class="error-list mb-3"></div>
+
+                    <div class="input-container">
+                        <div class="inputGroup">
+                            <input asp-for="Email" id="Email" readonly value="@Model?.Email" />
+                            <label for="Email" style="transform: translate(-50%, -3.3rem) scale(0.85); background-color: #ffffff; padding: 0 0.5rem; color: #9ca3af;">Account Email</label>
+                        </div>
+                    </div>
+
+                    <div class="input-container">
+                        <div class="inputGroup">
+                            <input asp-for="Username" id="Username" required autocomplete="off" />
+                            <label for="Username">Username</label>
+                        </div>
+                        <span asp-validation-for="Username" class="error-text"></span>
+                    </div>
+
+                    <button type="submit" class="calc-btn w-100 mt-4">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

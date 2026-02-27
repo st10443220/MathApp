@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using MathApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MathApp.Data
 {
@@ -7,6 +8,7 @@ namespace MathApp.Data
         public MathAppContext(DbContextOptions<MathAppContext> options)
             : base(options) { }
 
-        public DbSet<MathApp.Models.MathCalculations> MathCalculations { get; set; } = default!;
+        public DbSet<MathCalculations> MathCalculations { get; set; } = default!;
+        public DbSet<UserProfile> UserProfiles { get; set; }
     }
 }

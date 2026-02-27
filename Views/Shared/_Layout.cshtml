@@ -12,27 +12,58 @@
 
     @{
         var currentAction = ViewContext.RouteData.Values["Action"]?.ToString() ?? "Calculate";
-        var activeNavClass = currentAction == "History" ? "active-history" : "active-calc";
+        @* var activeNavClass = currentAction == "History" ? "active-history" : "active-calc"; *@
+
+        // Lowk just some ease of use implementation
+        var activeNavClass = Context.Session.GetString("currentUser") == null ? "active-login" : "active-calc"; 
+
+        if (currentAction == "History") activeNavClass = "active-history";
+        if (currentAction == "Calculate") activeNavClass = "active-calc";
+        if (currentAction == "Login") activeNavClass = "active-login";
+        if (currentAction == "LogOut") activeNavClass = "active-logout";
     }
 
     <header class="app-header">
+
         <nav class="app-nav">
             <a class="app-brand" asp-area="" asp-controller="Math" asp-action="Calculate">
                 MathApp
             </a>
 
             <div class="nav-pill-group @activeNavClass">
-
                 <a class="nav-item calc-tab @(currentAction == "Calculate" ? "active" : "")"
                    asp-controller="Math" asp-action="Calculate">Calculate</a>
 
                 <a class="nav-item hist-tab @(currentAction == "History" ? "active" : "")"
                    asp-controller="Math" asp-action="History">History</a>
 
-                <div class="nav-glider"></div>
+                @if (Context.Session.GetString("currentUser") == null)
+                {
+                    <a class="nav-item login-tab @(currentAction == "Login" ? "active" : "")"
+                       asp-controller="Auth" asp-action="Login">Login</a>
+                }
 
+                <div class="nav-glider"></div>
             </div>
         </nav>
+
+        @if (Context.Session.GetString("currentUser") != null)
+        {
+            <div class="profile-widget">
+                <div class="profile-trigger">
+                    <span class="username-text">@Context.Session.GetString("currentUserName")</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </div>
+
+                <div class="profile-menu">
+                    <div class="dropdown-divider"></div>
+                    <a asp-controller="Profile" asp-action="Index" class="dropdown-item">View Profile</a>
+                    <a asp-controller="Auth" asp-action="LogOut" class="dropdown-item danger-text">Logout</a>
+                </div>
+            </div>
+        }
     </header>
 
     <main role="main" class="app-main">

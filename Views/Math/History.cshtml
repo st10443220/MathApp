@@ -11,7 +11,11 @@
 
         <div class="calc-header">
             <h2>History</h2>
-            @* <a asp-action="Calculate" class="history-link">Back to Calculator</a> *@
+
+            @if (Model != null && Model.Any())
+            {
+                <a asp-action="Clear" class="clear-btn" onclick="return confirm('Are you sure you want to delete all your history?');">Clear</a>
+            }
         </div>
 
         <div class="table-container">
@@ -71,6 +75,5 @@
                 </tbody>
             </table>
         </div>
-
     </div>
 </div>
